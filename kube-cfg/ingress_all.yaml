@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: config-server
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: config.server
+  - http:
+      paths:
+      - path: /config-server
+        pathType: Prefix
+        backend:
+          service: 
+            name: config-server
+            port: 
+              number: 1000
+      - path: /authorization
+        pathType: Prefix
+        backend:
+          service: 
+            name: authorization
+            port: 
+              number: 8080
+      - path: /library
+        pathType: Prefix
+        backend:
+          service: 
+            name: library
+            port: 
+              number: 8080

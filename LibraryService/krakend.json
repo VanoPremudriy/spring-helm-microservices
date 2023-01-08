@@ -1,0 +1,43 @@
+{
+  "$schema": "https://www.krakend.io/schema/v3.json",
+  "version": 3,
+  "name": "KrakenD - API Gateway",
+  "timeout": "3000ms",
+  "cache_ttl": "300s",
+  "output_encoding": "json",
+  "port": 8083,
+  "endpoints": [
+    {
+      "endpoint": "/user/create",
+      "method": "POST",
+      "output_encoding": "json",
+      "backend": [
+        {
+          "url_pattern": "/user/create",
+          "encoding": "json",
+          "sd": "static",
+          "method": "GET",
+          "extra_config": {
+            "modifier/martian": {
+              "id": 1,
+              "username": "test",
+              "email": "test@test.ru",
+              "password": "010401"
+            }
+          },
+          "disable_host_sanitize": false,
+          "host": [
+            "http://authorization:8080"
+          ],
+          "is_collection": false,
+          "target": ""
+        }
+      ],
+      "extra_config": {
+        "proxy": {
+          "sequential": false
+        }
+      }
+    }
+  ]
+}

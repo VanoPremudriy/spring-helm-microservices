@@ -1,0 +1,48 @@
+#Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: library
+  name: library
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: library
+  template:
+    metadata:
+      labels:
+        app: library
+        visualize: "true"
+    spec:
+      containers:
+      - name: library
+        image: vanopremudriy/library:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8082
+        resources:
+          limits:
+            memory: "200Mi"
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+
+---
+#Service
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    visualize: "true"
+  name: library
+spec:
+  selector:
+    app: library
+  ports:
+  - name: http
+    protocol: TCP
+    port: 8082
+    targetPort: 8082
+  type: NodePort
